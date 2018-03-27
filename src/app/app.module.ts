@@ -6,6 +6,7 @@ import { HttpModule } from '@angular/http';
 import { MaterialModule} from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
+
 import 'hammerjs';
 
 import { AppComponent } from './app.component';
@@ -17,9 +18,12 @@ import { FooterComponent } from './footer/footer.component';
 import { AboutComponent } from './about/about.component';
 import { ContactComponent } from './contact/contact.component';
 import { HomeComponent } from './home/home.component';
+import { LoginComponent } from './login/login.component';
+
 
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { PromotionService } from './services/promotion.service';
+import { LeaderService } from './services/leader.service';
 
 @NgModule({
   declarations: [
@@ -30,7 +34,8 @@ import { PromotionService } from './services/promotion.service';
     FooterComponent,
     AboutComponent,
     ContactComponent,
-    HomeComponent
+    HomeComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -41,7 +46,10 @@ import { PromotionService } from './services/promotion.service';
     FlexLayoutModule,
     AppRoutingModule
   ],
-  providers: [DishService, PromotionService], 
+  providers: [DishService, PromotionService, LeaderService],
+  entryComponents: [
+    LoginComponent
+  ], 
   bootstrap: [AppComponent]
 })
 export class AppModule { }
