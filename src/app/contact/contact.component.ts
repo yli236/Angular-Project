@@ -32,16 +32,25 @@ export class ContactComponent implements OnInit {
       email: new FormControl(null, [Validators.required, 
         Validators.pattern(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
       ]),
-      agree: false,
-      contacttype: 'None',
-      message: ''
+      agree:  new FormControl(false, Validators.required),
+      contacttype:  new FormControl('None', Validators.required),
+      message:  new FormControl(null, Validators.required)
     });
   }
 
   onsubmit() {
     this.feedback = this.feedbackForm.value;
     console.log(this.feedback);
-    this.feedbackForm.reset();
+    this.feedbackForm.reset({
+      firstname: '',
+      lastname: '',
+      telnum:'',
+      email:'',
+      agree:false,
+      contacttype:'None',
+      message:''
+
+    });
   }
 
 }
