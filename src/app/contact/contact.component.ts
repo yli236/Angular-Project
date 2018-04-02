@@ -13,6 +13,33 @@ export class ContactComponent implements OnInit {
   feedbackForm: FormGroup;
   feedback: Feedback;
   contactType = ContactType;
+  formErrors = {
+    'firstname':'',
+    'lastname': '',
+    'telnum': '',
+    'email': ''
+  };
+
+  validationsMessages = {
+    'firstname':{
+      'required': 'First Name is required',
+      'minlength': 'First Name must be at least 2 characters long',
+      'maxlength': 'First Name cannot be more than 25 characters long'
+    },
+    'lastname':{
+      'required': 'Last Name is required',
+      'minlength': 'Last Name must be at least 2 characters long',
+      'maxlength': 'Last Name cannot be more than 25 characters long'
+    },
+    'telnum':{
+      'required': 'Tel. Number is required',
+      'pattern': 'Tel. Number must contain only numbers'
+    },
+    'email':{
+      'required': 'Email is required',
+      'email': 'Email not in valid format'
+    }
+  };
 
   constructor(private fb: FormBuilder) {
     this.createForm();
@@ -23,20 +50,43 @@ export class ContactComponent implements OnInit {
 
   createForm() {
     this.feedbackForm = this.fb.group({
-      firstname: new FormControl(null, Validators.required),
-      lastname: new FormControl(null, Validators.required),
-      telnum: new FormControl(null, [
+      firstname: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(25)]],
+      lastname: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(25)]],
+      telnum: [null, [
         Validators.required,
-        Validators.pattern(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im)
-      ]),
-      email: new FormControl(null, [Validators.required, 
-        Validators.pattern(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
-      ]),
-      agree:  new FormControl(false, Validators.required),
-      contacttype:  new FormControl('None', Validators.required),
-      message:  new FormControl(null, Validators.required)
+        Validators.pattern
+      ]],
+      email: [null, [Validators.required, 
+        Validators.email
+      ]],
+      agree:  [false, Validators.required],
+      contacttype:['None', Validators.required],
+      message: [null, Validators.required]
     });
+
+    this.feedbackForm.valueChanges
+    .subscribe(data => this.onValueChanged(data));
+
+    this.onValueChanged(); // (re)set form validation messages
   }
+
+    onValueChanged(data?: any){
+      if(!this.feedbackForm){
+        return;
+      }
+      const form = this.feedbackForm;
+      for(const field in this.formErrors){
+        this.formErrors[field] = '';
+        const control = form.get(field);
+        if(control && control.dirty && !control.valid){
+          const messages = this.validationsMessages[field];
+          for(const key in control.errors){
+            this.formErrors[field] += messages[key] + ' ';
+          }
+        }
+      }
+    }
+  
 
   onsubmit() {
     this.feedback = this.feedbackForm.value;
