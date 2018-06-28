@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Feedback, ContactType } from '../shared/feedback';
 
-import { flyInOut } from '../animations/app.animation';
+import { flyInOut, expand } from '../animations/app.animation';
+
+import { FeedbackService } from '../services/feedback.service';
 
 
 @Component({
@@ -14,14 +16,17 @@ import { flyInOut } from '../animations/app.animation';
     'style': 'display: block'
   },
   animations:[
-    flyInOut()
+    flyInOut(),
+    expand()
   ]
 })
 export class ContactComponent implements OnInit {
 
   feedbackForm: FormGroup;
   feedback: Feedback;
+  feedbackcopy: Feedback = null;
   contactType = ContactType;
+  inprogress: boolean;
   formErrors = {
     'firstname':'',
     'lastname': '',
@@ -50,7 +55,8 @@ export class ContactComponent implements OnInit {
     }
   };
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,
+    private feedbackservice: FeedbackService) {
     this.createForm();
    }
 
@@ -97,9 +103,14 @@ export class ContactComponent implements OnInit {
     }
   
 
-  onsubmit() {
+  onSubmit() {
     this.feedback = this.feedbackForm.value;
+    this.inprogress = true;
+  
     console.log(this.feedback);
+    
+    this.feedbackservice.submitFeedback(this.feedback)
+      .subscribe(feedback => this.submitted(feedback));
     this.feedbackForm.reset({
       firstname: '',
       lastname: '',
@@ -110,6 +121,12 @@ export class ContactComponent implements OnInit {
       message:''
 
     });
+  }
+
+  submitted(feedback: Feedback){
+    this.inprogress = null;
+    this.feedbackcopy = feedback;
+    setTimeout(() => {this.feedbackcopy = null; this.feedback=null}, 5000);
   }
 
 }
