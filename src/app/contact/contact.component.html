@@ -101,20 +101,15 @@ fxLayoutGap="10px">
  
   </div>
   <div *ngIf="feedbackcopy" [@expand]>
-      
-              
-                  
-                  <p>First Name: {{ feedbackcopy.firstname}}</p>
-                  <p>Last Name:  {{ feedbackcopy.lastname}}</p>
-                    <p>Tel. Number: {{ feedbackcopy.telnum }}</p>
-                    <p>Email: {{ feedbackcopy.email}}</p>
-                    <p>Contact you?: {{ feedbackcopy.agree}}</p>
-                    <p>How?: {{ feedbackcopy.contacttype}}</p>
-                    <p>Feedback: {{ feedbackcopy.message}} </p>
-                  
-          
-          </div>
-          <div *ngIf="inprogress" [@expand]>
-              <md-spinner></md-spinner><h4>Submitting Form . . .</h4>
-            </div>
+      <p>First Name: {{ feedbackcopy.firstname}}</p>
+      <p>Last Name:  {{ feedbackcopy.lastname}}</p>
+      <p>Tel. Number: {{ feedbackcopy.telnum }}</p>
+      <p>Email: {{ feedbackcopy.email}}</p>
+      <p>Contact you?: {{ feedbackcopy.agree}}</p>
+      <p>How?: {{ feedbackcopy.contacttype}}</p>
+      <p>Feedback: {{ feedbackcopy.message}} </p>
+  </div>
+  <div *ngIf="inprogress" [@expand]>
+    <md-spinner></md-spinner><h4>Submitting Form . . .</h4>
+  </div>
           

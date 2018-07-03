@@ -123,7 +123,7 @@ export class ContactComponent implements OnInit {
     });
   }
 
-  submitted(feedback: Feedback){
+  submitted(feedback: Feedback){ //submitted status
     this.inprogress = null;
     this.feedbackcopy = feedback;
     setTimeout(() => {this.feedbackcopy = null; this.feedback=null}, 5000);
